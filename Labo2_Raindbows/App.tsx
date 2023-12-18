@@ -1,50 +1,46 @@
 import * as React from "react";
 import { rainbow } from "rainbow-colors-array-ts";
-import { View, StyleSheet, Text } from "react-native";
-import Constants from "expo-constants";
+import { View, StyleSheet, Text, StyleProp, ViewStyle } from "react-native";
 
-export default function App() {
-  const colors = rainbow(10, "hex", false);
-  const raindbowLetter = "rainbow";
-  return (
-    <View style={styles.container}>
-      <View style={{ backgroundColor: "red" }}>
-        {colors.slice(0, 6).map((color) => (
-          <View
-            key={color.hex}
-            style={{ backgroundColor: color.hex, height: 10 }}
-          ></View>
-        ))}
-      </View>
-      <View style={{ flex: 1, flexDirection: "row" }}>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-around",
-          }}
-        >
-          {colors.slice(0, 6).map((color) => (
-            <View
-              key={color.hex}
-              style={{ backgroundColor: color.hex, width: 10 }}
-            ></View>
-          ))}
-        </View>
-        <View style={{flex: 1, justifyContent:"space-around", alignItems:"center" }}>
-          {colors.slice(0, 6).map((color) => (
-            <View
-              key={color.hex}
-              style={{ backgroundColor: color.hex, width: 50, height: 50 }}
-            ></View>
-          ))}
-        </View>
-      </View>
-      <View style={{ height: 100, alignItems:"center", justifyContent:"center", flexDirection:"row"}}>
+
+interface RainBowProps{
+  containerStyle : StyleProp<ViewStyle>,
+  lineStyle: StyleProp<ViewStyle>
+}
+
+function RainBow({containerStyle, lineStyle}: RainBowProps){
+  const colors = rainbow(6, "hex", false);
+  return(
+    <View style={containerStyle}>
+       {colors.map((color) => ( <View key={color.hex}style={[{ backgroundColor: color.hex} ,lineStyle]}></View> ))}
+    </View>
+  )
+}
+
+interface FooterProps{
+ letter: string,
+ containerStyle : StyleProp<ViewStyle>,
+}
+
+function Footer({letter,containerStyle,lineStyle}:FooterProps){
+  const colors = rainbow(letter.length, "hex", false);
+  return(
+    <View style={containerStyle}>
         {
-          raindbowLetter.split("").map((letter, index) => <Text style={{color: colors[index].hex, fontSize:30}}>{letter}</Text>)
+          letter.split("").map((letter, index) => <Text style={{color: colors[index].hex, fontSize:30}}>{letter}</Text>)
         }
       </View>
+  )
+}
+export default function App() {
+  return (
+    <View style={styles.container}>
+      <RainBow containerStyle= {{}} lineStyle= {{height:10}} />
+      <View style={{ flex: 1, flexDirection: "row" }}>
+        <RainBow containerStyle= {{flex: 1,flexDirection: "row", justifyContent: "space-around"}} lineStyle= {{width:10}} />
+        <RainBow containerStyle= {{flex: 1, justifyContent:"space-around", alignItems:"center"}} lineStyle= {{width: 50, height: 50}} />
+      </View>
+      <Footer containerStyle={{height: 100, alignItems:"center", justifyContent:"center", flexDirection:"row"}} letter="Rainbow"/>
     </View>
   );
 }
