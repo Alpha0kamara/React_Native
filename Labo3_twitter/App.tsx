@@ -1,28 +1,24 @@
-import { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import TweetList from './components/TweetList';
 import DataProvider, { DataContext } from './components/DataProvider';
 
-function App() {
- const {tweets} = useContext(DataContext);
+ export default function App() {
+
   return (
-    <View style={styles.container}>
-      <TweetList tweets={tweets} />
+    <DataProvider>
+       <View style={styles.container}>
+      <TweetList/>
     </View>
+    </DataProvider>
+   
   );
 }
-export default function AppWrapper(){
-  return(
-    <DataProvider>
-    <App/>
-    </DataProvider>
-  )
-}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
   },
 });

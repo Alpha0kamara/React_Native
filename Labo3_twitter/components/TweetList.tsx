@@ -1,10 +1,14 @@
-import React from "react";
-import { FlatList, View, Image, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { FlatList, View, Image, Text, StyleSheet, TextInput } from "react-native";
 import { Tweet } from "../types";
+import { useContext } from "react";
+import { DataContext } from "./DataProvider";
+import Constants from 'expo-constants';
 interface TweetViewProps {
     tweet: Tweet,
 }
 function TweetView({ tweet }: TweetViewProps) {
+   
     let profile = tweet.profile!;
     return (
         <View style={styles.postContainer}>
@@ -21,20 +25,28 @@ function TweetView({ tweet }: TweetViewProps) {
         </View>
     )
 }
-interface TweetListProps {
-    tweets: Tweet[]
-}
-export default function TweetList({ tweets }: TweetListProps) {
+
+export default function TweetList() {
+    const {tweets,loading,loadDate} = useContext(DataContext);
+    const [filter,setFilters] = useState("");
+
+    const filterTweets = tweets.filter(tweet => tweet.text.toUpperCase().includes(filter.toUpperCase()));
     return (
         <View style={styles.container}>
-            <FlatList data={tweets}
+            <TextInput onChangeText={(text) => setFilters(text)} value={filter} style={{backgroundColor:"white",marginVertical:8,marginHorizontal:16, borderColor:"#444", borderRadius:8,padding:15,borderWidth:1,elevation:3}}>
+
+            </TextInput>
+            <FlatList data={filterTweets}
                 renderItem={({ item }) => <TweetView tweet={item} />}
-                keyExtractor={(item) => item.id.toString()} />
+                keyExtractor={(item) => item.id.toString()} 
+                refreshing ={loading}
+                onRefresh={()=> loadDate()}/>
         </View>
     )
 }
 const styles = StyleSheet.create({
     container: {
+        paddingTop: Constants.statusBarHeight,
         flex: 1,
         flexDirection: "column",
         alignItems: "stretch",
