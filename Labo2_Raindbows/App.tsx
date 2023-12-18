@@ -19,17 +19,27 @@ function RainBow({containerStyle, lineStyle}: RainBowProps){
 
 interface FooterProps{
  letter: string,
- containerStyle : StyleProp<ViewStyle>,
+ containerStyle : StyleProp<ViewStyle>
 }
 
-function Footer({letter,containerStyle,lineStyle}:FooterProps){
+function Footer({letter,containerStyle}:FooterProps){
   const colors = rainbow(letter.length, "hex", false);
   return(
     <View style={containerStyle}>
         {
-          letter.split("").map((letter, index) => <Text style={{color: colors[index].hex, fontSize:30}}>{letter}</Text>)
+          letter.split("").map((letter, index) => <Letter color={colors[index].hex} letter={letter}/>)
         }
       </View>
+  
+   )
+}
+interface LetterProps{
+  letter:string,
+  color: string,
+}
+function Letter({letter,color}: LetterProps){
+  return(
+    <Text style={{color: color, fontSize:30}}>{letter}</Text>
   )
 }
 export default function App() {
