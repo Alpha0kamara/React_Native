@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Switch, StyleSheet } from 'react-native';
-import { Button } from 'react-native-elements';
+
 
 const App = () => {
   const [backgroundColor, setBackgroundColor] = useState('white');
